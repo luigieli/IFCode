@@ -117,16 +117,6 @@ export function DateTimePicker({
     }
   };
 
-  const isCurrentMonth = () => {
-    const today = new Date();
-    return currentMonth.getMonth() === today.getMonth() && 
-           currentMonth.getFullYear() === today.getFullYear();
-  };
-
-  const goToToday = () => {
-    setCurrentMonth(new Date());
-  };
-
   return (
     <div className={className}>
       <DatePicker
@@ -157,10 +147,6 @@ export function DateTimePicker({
           date,
           changeYear,
           changeMonth,
-          decreaseMonth,
-          increaseMonth,
-          prevMonthButtonDisabled,
-          nextMonthButtonDisabled,
         }) => {
           const months = [
             "janeiro", "fevereiro", "março", "abril", "maio", "junho",

@@ -42,6 +42,10 @@ class Atividade extends Model
         'turma_id',
     ];
 
+    protected $casts = [
+        'data_entrega' => 'datetime',
+    ];
+
     public function problema()
     {
         return $this->hasOne(Problema::class, 'id', 'problema_id');
@@ -49,6 +53,6 @@ class Atividade extends Model
 
     public function turma()
     {
-        return $this->hasOne(Turma::class, 'id', 'turma_id');
+        return $this->belongsTo(Turma::class, 'turma_id');
     }
 }

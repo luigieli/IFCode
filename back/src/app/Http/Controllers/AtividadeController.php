@@ -53,8 +53,7 @@ class AtividadeController extends Controller
 
         $atividade = Atividade::findOrFail($request->atividade_id);
 
-        // Carrega o problema completo via service
-        $atividade->problema = $problemaService->buscarPorId($atividade->problema_id);
+        $atividade->problema = ProblemaService::buscarPorId($atividade->problema_id);
 
         return response()->json($atividade);
     }

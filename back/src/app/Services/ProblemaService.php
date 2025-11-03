@@ -56,7 +56,7 @@ class ProblemaService
                 $caso_teste->problema_id = $this->_problema->id;
 
                 if (!$caso_teste->save()) {
-                    DB::save();
+                    DB::rollback();
                     return false;
                 }
             }
