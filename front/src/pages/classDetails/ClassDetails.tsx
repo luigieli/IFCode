@@ -600,8 +600,13 @@ function NewActivityModal({ isOpen, onClose, onSave, problems, onViewProblem }: 
     if (!selectedProblemId || !dueDate) {
       return;
     }
-    // Convert Date to MySQL datetime format (YYYY-MM-DD HH:MM:SS)
-    const formattedDate = dueDate.toISOString().slice(0, 19).replace('T', ' ');
+    const year = dueDate.getFullYear();
+    const month = String(dueDate.getMonth() + 1).padStart(2, '0');
+    const day = String(dueDate.getDate()).padStart(2, '0');
+    const hours = String(dueDate.getHours()).padStart(2, '0');
+    const minutes = String(dueDate.getMinutes()).padStart(2, '0');
+    const seconds = String(dueDate.getSeconds()).padStart(2, '0');
+    const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
     onSave({
       problema_id: selectedProblemId,
       data_entrega: formattedDate,
@@ -869,8 +874,13 @@ function EditActivityModal({ isOpen, onClose, onSave, activity, problems, onView
     if (!selectedProblemId || !dueDate) {
       return;
     }
-    // Convert Date to MySQL datetime format (YYYY-MM-DD HH:MM:SS)
-    const formattedDate = dueDate.toISOString().slice(0, 19).replace('T', ' ');
+    const year = dueDate.getFullYear();
+    const month = String(dueDate.getMonth() + 1).padStart(2, '0');
+    const day = String(dueDate.getDate()).padStart(2, '0');
+    const hours = String(dueDate.getHours()).padStart(2, '0');
+    const minutes = String(dueDate.getMinutes()).padStart(2, '0');
+    const seconds = String(dueDate.getSeconds()).padStart(2, '0');
+    const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
     onSave({
       problema_id: selectedProblemId,
       data_entrega: formattedDate,
