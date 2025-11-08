@@ -406,7 +406,16 @@ export default function ClassDetails() {
                       {/* Botões de ação */}
                       <div className="absolute bottom-3 left-3 flex gap-2">
                         <button
-                          onClick={() => setViewActivity(activity)}
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            console.log('', {
+                              activity,
+                              allProblemsLength: allProblems.length,
+                              foundProblem: allProblems.find(p => p.id === activity.problemId)
+                            });
+                            setViewActivity(activity);
+                          }}
                           className={`px-3 py-1.5 text-xs font-medium text-gray-700 rounded-full transition-colors ${
                             isOverdue
                               ? "hover:bg-red-100"
@@ -418,7 +427,11 @@ export default function ClassDetails() {
                           Ver Problema
                         </button>
                         <button
-                          onClick={() => setViewSubmissionsActivity(activity)}
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setViewSubmissionsActivity(activity);
+                          }}
                           className={`px-3 py-1.5 text-xs font-medium text-gray-700 rounded-full transition-colors ${
                             isOverdue
                               ? "hover:bg-red-100"
@@ -1242,7 +1255,6 @@ function SubmissionsModal({ isOpen, onClose, activity, classId }: SubmissionsMod
 
   const handleRowClick = (submission: StudentSubmission) => {
     // TODO: Implementar navegação ou ação ao clicar na linha
-    console.log("Clicou na submissão:", submission);
   };
 
   if (!isOpen || !activity) return null;
