@@ -24,59 +24,10 @@ Vagrant.configure("2") do |config|
   # Sincroniza a pasta do projeto para /vagrant na VM
   config.vm.synced_folder ".", "/vagrant"
 
-
+  # Provisionamento usando o script setup.sh
   config.vm.provision "shell", inline: <<-SHELL
-    echo "=== Iniciando provisionamento da VM ==="
-    
-    # Atualizar sistema
-    apt-get update
-    apt-get upgrade -y
-    
-    # Instalar dependências básicas
-    apt-get install -y \
-        apt-transport-https \
-        ca-certificates \
-        curl \
-        gnupg \
-        lsb-release \
-        wget \
-        unzip
-    
-    # Instalar Docker
-    echo "Instalando Docker..."
-    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
-    apt-get update
-    apt-get install -y docker-ce docker-ce-cli containerd.io
-    
-    # Instalar Docker Compose V2
-    echo "Instalando Docker Compose..."
-    apt-get install -y docker-compose-plugin
-
-    # Configurar GRUB (necessário para Judge0)
-    echo "Configurando GRUB..."
-    cp /etc/default/grub /etc/default/grub.backup
-    sed -i 's/GRUB_CMDLINE_LINUX=""/GRUB_CMDLINE_LINUX="systemd.unified_cgroup_hierarchy=0"/' /etc/default/grub
-    update-grub
-    
-    # Adicionar usuário vagrant ao grupo docker
-    usermod -aG docker vagrant
-
-    # Gerar senhas redis e postgres do judge0
-    REDIS_PASS=$(openssl rand -base64 32 | tr -d "=+/" | cut -c1-32)
-    POSTGRES_PASS=$(openssl rand -base64 32 | tr -d "=+/" | cut -c1-32)
-    
-    echo "Redis Password: $REDIS_PASS" > /vagrant/passwords.txt
-    echo "PostgreSQL Password: $POSTGRES_PASS" >> /vagrant/passwords.txt
-    chown vagrant:vagrant /vagrant/passwords.txt
-    
-    # Atualizar configurações no judge0.conf
     cd /vagrant
-    sed -i "s#REDIS_PASSWORD=.*#REDIS_PASSWORD=$REDIS_PASS#" judge0.conf
-    sed -i "s#POSTGRES_PASSWORD=.*#POSTGRES_PASSWORD=$POSTGRES_PASS#" judge0.conf
-    
-    echo "=== PROVISIONAMENTO COMPLETO ==="
-    echo "Por favor, reinicie a VM com 'vagrant reload' para aplicar as configurações do GRUB."
-    echo "Após o reload, acesse com 'vagrant ssh' e execute 'cd /vagrant && docker compose up -d' para iniciar os serviços."
+    chmod +x setup.sh
+    ./setup.sh
   SHELL
 end
