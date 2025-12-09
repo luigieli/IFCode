@@ -79,11 +79,15 @@ class CheckSubmissionStatusJob implements ShouldQueue
             } elseif ($statusId != STATUS::ACEITA) {
                 $submissao->status_correcao_id = $statusId;
                 $submissao->save();
-                return;
             }
 
             $correcao->status_correcao_id = $statusId;
+            $correcao->stdout = isset($resultado['stdout']) ? base64_decode($resultado['stdout']) : null;
+            $correcao->stderr = isset($resultado['stderr']) ? base64_decode($resultado['stderr']) : null;
+            $correcao->compile_output = isset($resultado['compile_output']) ? base64_decode($resultado['compile_output']) : null;
+            $correcao->message = isset($resultado['message']) ? base64_decode($resultado['message']) : null;
             $correcao->save();
+
         }
 
         if ($possuiPendentes) {
