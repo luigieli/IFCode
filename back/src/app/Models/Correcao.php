@@ -13,6 +13,10 @@ class Correcao extends Model
         'token',
         'status_correcao_id',
         'submissao_id',
-        'caso_teste_id'
+        'caso_teste_id',
+        'stdout',
+        'stderr',
+        'compile_output',
+        'message'
     ];
 }
