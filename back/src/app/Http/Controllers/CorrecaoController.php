@@ -27,8 +27,7 @@ class CorrecaoController extends Controller
         $correcoes->transform(function ($correcao) {
             $statusInfo = Status::get($correcao->status_correcao_id);
             $correcao->status = $statusInfo['nome'] ?? 'Desconhecido';
-            unset($correcao->token);
-            unset($correcao->status_correcao_id);
+            $correcao->makeHidden(['token', 'status_correcao_id']);
             return $correcao;
         });
 
